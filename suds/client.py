@@ -352,7 +352,16 @@ class ServiceSelector:
             return None
         else:
             return self.__find(ds)
-
+    def __dir__(self):
+	"""
+	Add SOAP method names as the attribute list for the service
+	Useful for tab-completion in iPython, for example.
+	@return: List of method names attached to this service provider
+	"""
+	if len(self.__services[0].ports) > 1:
+	    return reduce(lambda x,y: x.methods.keys() + y.methods.keys(), self.__services[0].ports)
+        else:
+            return self.__services[0].ports[0].methods.keys()
 
 class PortSelector:
     """
